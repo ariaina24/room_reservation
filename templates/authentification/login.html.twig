@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - RoomReservation{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Connexion</h1>
+
+        {% if error %}
+            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-4 text-green-600 text-center">
+                Connecté en tant que {{ app.user.userIdentifier }}.
+                <a href="{{ path('logout') }}" class="underline text-blue-600 hover:text-blue-800">Se déconnecter</a>
+            </div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+            <div>
+                <label for="inputEmail" class="block text-sm font-medium text-gray-700">Adresse email</label>
+                <input type="email" name="email" id="inputEmail"
+                       value="{{ last_username }}"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required autofocus autocomplete="email">
+            </div>
+
+            <div>
+                <label for="inputPassword" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required autocomplete="current-password">
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex items-center">
+                <input type="checkbox" name="_remember_me" id="remember_me"
+                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                    Se souvenir de moi
+                </label>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                Se connecter
+            </button>
+        </form>
+
+        <p class="mt-6 text-sm text-center text-gray-500">
+            Vous n'avez pas encore de compte ?
+            <a href="{{ path('register') }}" class="text-blue-600 hover:text-blue-800 underline">Inscrivez-vous</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

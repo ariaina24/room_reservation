@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - RoomReservation{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Créer un compte</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if registrationForm.vars.errors|length > 0 %}
+            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                <ul>
+                    {% for error in registrationForm.vars.errors %}
+                        <li>{{ error.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {{ form_start(registrationForm) }}
+
+        <div class="mb-4">
+            {{ form_label(registrationForm.email, 'Adresse email', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg'}}) }}
+            {{ form_errors(registrationForm.email) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(registrationForm.username, 'Nom d’utilisateur', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.username, {'attr': {'class': 'w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg'}}) }}
+            {{ form_errors(registrationForm.username) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg'}}) }}
+            {{ form_errors(registrationForm.plainPassword.first) }}
+        </div>
+
+        <div class="mb-6">
+            {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg'}}) }}
+            {{ form_errors(registrationForm.plainPassword.second) }}
+        </div>
+
+        <div class="mb-4 text-red-600 text-sm">
+            {{ form_errors(registrationForm.plainPassword) }}
+        </div>
+
+        {{ form_widget(registrationForm.submit, {'attr': {'class': 'w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200'}}) }}
+
+        {{ form_end(registrationForm) }}
+
+        <p class="mt-6 text-sm text-center text-gray-500">
+            Vous avez déjà un compte ?
+            <a href="{{ path('login') }}" class="text-blue-600 hover:text-blue-800 underline">Connectez-vous</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

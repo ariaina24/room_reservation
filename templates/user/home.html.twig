@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - RoomReservation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+<nav class="bg-white shadow-md py-4 px-6 fixed top-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-blue-600">RoomReservation</a>
+        <ul class="flex items-center gap-6 text-gray-700 font-medium">
+            <li><a href="#" class="hover:text-blue-600 transition">Nos Salles</a></li>
+            <li><a href="#" class="hover:text-blue-600 transition">Mes reservations</a></li>
+            <li><a href="{{ path('logout') }}" class="text-red-500 hover:text-red-700 transition">Déconnexion</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center pt-32 px-4">
+    <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-12">
+        
+        <div class="w-full md:w-1/2 text-center md:text-left animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 capitalize">
+                Bienvenue {{ app.user.username }} 🎉
+            </h1>
+            <p class="text-lg text-gray-600 mb-6">
+                Réservez la salle idéale pour vos événements, réunions ou célébrations. Rapide, simple et efficace !
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <a href="#"
+                   class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
+                    Réserver une salle
+                </a>
+                <a href="#"
+                   class="bg-gray-100 hover:bg-gray-200 text-blue-600 font-semibold py-3 px-6 rounded-lg shadow transition duration-300">
+                    Explorer nos salles
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 animate-fade-in-right">
+            <img src={{ asset('/assets/img/salle_reunion_bleu.jpg') }}
+                alt="Illustration de salle"
+                class="w-full max-w-2xl mx-auto md:mx-0">
+        </div>
+    </div>
+</section>
+
+{% endblock %}
