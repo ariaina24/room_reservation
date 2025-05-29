@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
@@ -21,9 +22,6 @@ class Room
     #[ORM\Column(nullable: true)]
     private ?int $capacity = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $localisation = null;
-
     /**
      * @var Collection<int, Reservation>
      */
@@ -33,9 +31,19 @@ class Room
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $localisation = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -67,17 +75,6 @@ class Room
         return $this;
     }
 
-    public function getLocalisation(): ?int
-    {
-        return $this->localisation;
-    }
-
-    public function setLocalisation(?int $localisation): static
-    {
-        $this->localisation = $localisation;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Reservation>
@@ -117,6 +114,42 @@ class Room
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): static
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

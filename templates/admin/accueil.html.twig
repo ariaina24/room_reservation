@@ -1,0 +1,27 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-8">🎛️ Dashboard Administrateur</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <a href="#"
+       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-blue-600 mb-2">🧱 Gérer les Salles</h2>
+        <p class="text-gray-600">Ajouter, modifier ou supprimer des salles disponibles.</p>
+    </a>
+
+    <a href="#"
+       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-green-600 mb-2">📅 Voir les Réservations</h2>
+        <p class="text-gray-600">Consulter toutes les réservations des utilisateurs.</p>
+    </a>
+
+    <a href="{{ path('logout') }}"
+       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-red-500 mb-2">🚪 Déconnexion</h2>
+        <p class="text-gray-600">Se déconnecter de l’espace administrateur.</p>
+    </a>
+
+</div>
+{% endblock %}

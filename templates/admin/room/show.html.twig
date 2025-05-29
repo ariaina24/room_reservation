@@ -1,0 +1,50 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">📄 Détails de la Salle</h1>
+
+<div class="bg-white p-6 rounded-lg shadow-md space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <p class="text-sm font-medium text-gray-600">Nom</p>
+            <p class="text-lg font-semibold text-gray-800">{{ room.name }}</p>
+        </div>
+
+        <div>
+            <p class="text-sm font-medium text-gray-600">Capacité</p>
+            <p class="text-lg font-semibold text-gray-800">{{ room.capacity }} personnes</p>
+        </div>
+
+        <div class="md:col-span-2">
+            <p class="text-sm font-medium text-gray-600">Localisation</p>
+            <p class="text-lg font-semibold text-gray-800">{{ room.localisation }}</p>
+        </div>
+
+        <div class="md:col-span-2">
+            <p class="text-sm font-medium text-gray-600 mb-1">Description</p>
+            <div class="prose prose-sm max-w-none text-gray-700 italic">{{ room.description ?? 'Aucune description' }}</div>
+        </div>
+
+        {% if room.image %}
+            <div class="md:col-span-2">
+                <p class="text-sm font-medium text-gray-600 mb-1">Image</p>
+                <img src="{{ asset('uploads/rooms/' ~ room.image) }}" alt="Image de la salle"
+                     class="w-64 h-40 object-cover rounded border">
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-6 flex flex-wrap gap-2">
+    <a href="{{ path('app_room_edit', {'id': room.id}) }}"
+       class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+        ✏️ Modifier
+    </a>
+    <a href="{{ path('app_room_index') }}"
+       class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
+        🔙 Retour
+    </a>
+
+    {{ include('admin/room/_delete_form.html.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{# templates/admin/_sidebar.html.twig #}
+<aside class="w-64 bg-white shadow-lg p-6 hidden md:block">
+    <div class="text-2xl font-bold text-blue-600 mb-6">
+        <a href="/">RoomReservation</a>
+    </div>
+    <ul class="space-y-4 text-gray-700 font-medium">
+        <li>
+            <a href="{{ path('admin') }}"
+               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
+                🏠 Accueil Admin
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_room_index') }}"
+               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
+                🧱 Gérer les Salles
+            </a>
+        </li>
+        <li>
+            <a href="#"
+               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
+                📅 Réservations
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('logout') }}"
+               class="block py-2 px-4 rounded text-red-600 hover:bg-red-100 transition">
+                🚪 Déconnexion
+            </a>
+        </li>
+    </ul>
+</aside>

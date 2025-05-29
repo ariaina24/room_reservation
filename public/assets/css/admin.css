@@ -1,0 +1,10 @@
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+aside {
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+}

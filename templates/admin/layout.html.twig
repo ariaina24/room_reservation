@@ -1,0 +1,19 @@
+{# templates/admin/layout.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - RoomReservation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen bg-gray-100">
+    {% include 'admin/_sidebar.html.twig' %}
+
+    <main class="flex-1 p-8">
+        {% block admin_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

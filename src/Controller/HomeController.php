@@ -15,7 +15,8 @@ final class HomeController extends AbstractController
         if(!$user){
             return $this->redirectToRoute('login');
         }
-        return $this->render('user/home.html.twig',[
+        
+        return $this->render('home.html.twig',[
             'user' => $this->getUser()
         ]);
     }

@@ -1,0 +1,67 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+<h1 class="text-2xl font-bold text-gray-800 mb-6">
+    ✏️ Modifier la salle
+</h1>
+
+<div class="bg-white p-6 rounded shadow-md">
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div>
+                {{ form_label(form.name, 'Nom de la salle') }}
+                {{ form_widget(form.name, {'attr': {'class': 'w-full p-2 border border-gray-400 rounded'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div>
+                {{ form_label(form.capacity, 'Capacité') }}
+                {{ form_widget(form.capacity, {'attr': {'class': 'w-full p-2 border border-gray-400 rounded'}}) }}
+                {{ form_errors(form.capacity) }}
+            </div>
+
+            <div class="md:col-span-2">
+                {{ form_label(form.localisation, 'Localisation') }}
+                {{ form_widget(form.localisation, {'attr': {'class': 'w-full p-2 border border-gray-400 rounded'}}) }}
+                {{ form_errors(form.localisation) }}
+            </div>
+
+            <div class="md:col-span-2">
+                {{ form_label(form.description, 'Description de la salle') }}
+                {{ form_widget(form.description, {'attr': {'class': 'w-full p-2 border border-gray-400 rounded'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div>
+                {{ form_label(form.image, 'Nouvelle image') }}
+                {{ form_widget(form.image, {'attr': {'class': 'w-full p-2 border border-gray-400 rounded'}}) }}
+                {{ form_errors(form.image) }}
+            </div>
+
+            {% if room.image %}
+                <div>
+                    <p class="text-gray-700 font-medium mb-2">Image actuelle :</p>
+                    <img src="{{ asset('uploads/rooms/' ~ room.image) }}" alt="Image de la salle"
+                         class="w-32 h-32 object-cover rounded border">
+                </div>
+            {% endif %}
+        </div>
+
+        <button class="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            💾 Mettre à jour
+        </button>
+    {{ form_end(form) }}
+
+    <div class="mt-4">
+        <a href="{{ path('app_room_index') }}"
+           class="inline-block mt-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">
+            🔙 Retour à la liste
+        </a>
+    </div>
+
+    <div class="mt-4">
+        {{ include('admin/room/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}
