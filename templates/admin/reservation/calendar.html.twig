@@ -1,0 +1,90 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+<h1 class="text-3xl font-extrabold text-gray-900 mb-8">📆 Calendrier des Réservations</h1>
+
+<div id="calendar"></div>
+
+<!-- Modal -->
+<div id="reservationModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden justify-center items-center z-50">
+  <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+    <h2 class="text-xl font-semibold mb-4">Détails de la Réservation</h2>
+    <div id="modalContent">
+      <!-- Les infos seront injectées ici -->
+    </div>
+    <div class="mt-4 text-right">
+      <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'fr',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: '{{ path('admin_reservations_calendar_data') }}',
+      eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        const event = info.event;
+
+        const reservationId = event.extendedProps.id;
+        const salle = event.title.split(' - ')[0];
+        const user = event.title.split(' - ')[1];
+        const start = event.start.toLocaleString();
+        const end = event.end.toLocaleString();
+        const color = event.backgroundColor;
+
+        const content = `
+          <p><strong>Salle :</strong> ${salle}</p>
+          <p><strong>Utilisateur :</strong> ${user}</p>
+          <p><strong>Début :</strong> ${start}</p>
+          <p><strong>Fin :</strong> ${end}</p>
+          <p><strong>Statut :</strong> <span style="color:${color}">${getStatusLabel(color)}</span></p>
+        `;
+
+        document.getElementById('modalContent').innerHTML = content;
+        document.getElementById('reservationModal').classList.add('show');
+      }
+    });
+
+    calendar.render();
+  });
+
+  function getStatusLabel(color) {
+    switch (color) {
+      case 'green': return 'Acceptée';
+      case 'red': return 'Refusée';
+      case 'orange': return 'En attente';
+      default: return 'Inconnu';
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('reservationModal').classList.remove('show');
+  }
+</script>
+
+<style>
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  #reservationModal.show {
+    display: flex;
+  }
+</style>
+{% endblock %}

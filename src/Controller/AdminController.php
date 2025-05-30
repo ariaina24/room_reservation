@@ -7,6 +7,7 @@ use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -95,5 +96,35 @@ final class AdminController extends AbstractController
 
         $this->addFlash('warning', 'Réservation refusée.');
         return $this->redirectToRoute('admin_reservations');
+    }
+
+    #[Route('/admin/reservations/calendar', name: 'admin_reservations_calendar')]
+    public function reservationsCalendar(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('admin/reservation/calendar.html.twig');
+    }
+
+    #[Route('/admin/reservations/calendar/data', name: 'admin_reservations_calendar_data')]
+    public function reservationsCalendarData(ReservationRepository $reservationRepository): JsonResponse
+    {
+        $reservations = $reservationRepository->findAll();
+
+        $events = [];
+        foreach ($reservations as $reservation) {
+            $events[] = [
+                'id' => $reservation->getId(),
+                'title' => $reservation->getRoom()->getName() . ' - ' . $reservation->getUser()->getEmail(),
+                'start' => $reservation->getReservationDate()->format('Y-m-d') . 'T' . $reservation->getStartTime()->format('H:i:s'),
+                'end' => $reservation->getReservationDate()->format('Y-m-d') . 'T' . $reservation->getEndTime()->format('H:i:s'),
+                'color' => match($reservation->getStatus()) {
+                    'acceptée' => 'green',
+                    'refusée' => 'red',
+                    default => 'orange',
+                },
+            ];
+        }
+
+        return new JsonResponse($events);
     }
 }
