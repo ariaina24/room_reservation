@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { background-color: white; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; }
+        .btn { background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+        .status { color: #16a34a; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Votre réservation a été <span class="status">acceptée</span></h2>
+        <p>Bonjour {{ user.username }},</p>
+        <p>Nous avons le plaisir de vous informer que votre réservation a été validée :</p>
+        <ul>
+            <li><strong>Salle :</strong> {{ room.name }}</li>
+            <li><strong>Date :</strong> {{ reservation.reservationDate|date('d/m/Y') }}</li>
+            <li><strong>Heure :</strong> de {{ reservation.startTime|date('H:i') }} à {{ reservation.endTime|date('H:i') }}</li>
+        </ul>
+        <a href="{{ url('user_my_reservations') }}" class="btn">Voir ma réservation</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+<h1 class="text-3xl font-extrabold text-gray-900 mb-4">📅 Réservations à valider</h1>
+
+<form method="GET" action="{{ path('admin_reservations') }}" class="mb-6 flex items-center gap-4">
+  <label for="statusFilter" class="font-semibold">Filtrer par statut :</label>
+  <select id="statusFilter" name="status" class="border rounded px-2 py-1">
+    <option value="" {% if app.request.get('status') == null %}selected{% endif %}>Tous</option>
+    <option value="pending" {% if app.request.get('status') == 'pending' %}selected{% endif %}>En attente</option>
+    <option value="acceptée" {% if app.request.get('status') == 'acceptée' %}selected{% endif %}>Acceptée</option>
+    <option value="refusée" {% if app.request.get('status') == 'refusée' %}selected{% endif %}>Refusée</option>
+  </select>
+
+  <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition-colors">
+    Filtrer
+  </button>
+</form>
+
+{% if reservations|length > 0 %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for reservation in reservations %}
+      <div
+        class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+        role="group"
+      >
+        <div class="relative h-48 w-full overflow-hidden">
+          {% if reservation.room.image %}
+            <img
+              src="{{ asset('uploads/rooms/' ~ reservation.room.image) }}"
+              alt="Image de la salle {{ reservation.room.name }}"
+              class="object-cover w-full h-full"
+              loading="lazy"
+            />
+          {% else %}
+            <div class="bg-gray-200 flex items-center justify-center h-full text-gray-400 text-sm italic">
+              Image non disponible
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2 truncate" title="{{ reservation.room.name }}">
+            {{ reservation.room.name }}
+          </h2>
+
+          <p class="text-gray-700 mb-1"><strong>Utilisateur :</strong> {{ reservation.user.email }}</p>
+          <p class="text-gray-700 mb-1">
+            <strong>Date :</strong> {{ reservation.reservationDate|date('d/m/Y') }}
+          </p>
+          <p class="text-gray-700 mb-3">
+            <strong>Heure :</strong> {{ reservation.startTime|date('H:i') }} - {{ reservation.endTime|date('H:i') }}
+          </p>
+
+          <p class="inline-block px-3 py-1 rounded-full text-sm font-medium
+                    {% if reservation.status == 'acceptée' %}
+                      bg-green-100 text-green-800
+                    {% elseif reservation.status == 'refusée' %}
+                      bg-red-100 text-red-800
+                    {% else %}
+                      bg-yellow-100 text-yellow-800
+                    {% endif %}
+                    mb-4"
+          >
+            {{ reservation.status|capitalize }}
+          </p>
+
+          {% if reservation.status not in ['acceptée', 'refusée'] %}
+            <div class="flex gap-3">
+              <a href="{{ path('admin_reservation_accept', {id: reservation.id}) }}"
+                 onclick="return confirm('Êtes-vous sûr de vouloir accepter cette réservation ?');"
+                 class="flex-1 text-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg
+                        transition-colors duration-200"
+                 aria-label="Accepter la réservation de {{ reservation.user.email }}">
+                ✅ Accepter
+              </a>
+              <a href="{{ path('admin_reservation_refuse', {id: reservation.id}) }}"
+                 onclick="return confirm('Êtes-vous sûr de vouloir refuser cette réservation ?');"
+                 class="flex-1 text-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg
+                        transition-colors duration-200"
+                 aria-label="Refuser la réservation de {{ reservation.user.email }}">
+                ❌ Refuser
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-gray-500 text-center mt-12 text-lg italic">Aucune réservation à afficher.</p>
+{% endif %}
+
+{% endblock %}

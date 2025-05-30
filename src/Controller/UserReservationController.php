@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class UserReservationController extends AbstractController
 {
@@ -92,6 +93,12 @@ final class UserReservationController extends AbstractController
                                                     <p><strong>De :</strong> {$startDateTime->format('H:i')}</p>
                                                     <p><strong>À :</strong> {$endDateTime->format('H:i')}</p>
                                                     <p><strong>Status :</strong> <span style=\"color: #ff9800;\">En attente de validation</span></p>
+                                                    <div style=\"text-align: center; margin-top: 30px;\">
+                                                        <a href=\"{$this->generateUrl('admin_reservations', [], UrlGeneratorInterface::ABSOLUTE_URL)}\" 
+                                                        style=\"background-color: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;\">
+                                                            📅 Voir la réservation
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
