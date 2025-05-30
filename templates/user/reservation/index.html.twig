@@ -30,7 +30,8 @@
             <div>
                 <label for="date" class="block text-gray-700 font-medium mb-1">Date</label>
                 <input type="date" name="date" id="date" required
-                       class="w-full border border-gray-300 rounded px-4 py-2 focus:ring focus:ring-blue-200">
+                    class="w-full border border-gray-300 rounded px-4 py-2 focus:ring focus:ring-blue-200"
+                    min="{{ "now"|date('Y-m-d') }}">
             </div>
 
             <div class="flex gap-4">
@@ -59,4 +60,42 @@
         </form>
     </div>
 </div>
+
+<script>
+    const dateInput = document.getElementById('date');
+    const startTimeInput = document.getElementById('start_time');
+    const endTimeInput = document.getElementById('end_time');
+
+    function pad(n) {
+        return n < 10 ? '0' + n : n;
+    }
+
+    function updateTimeMin() {
+        const today = new Date();
+        const selectedDate = new Date(dateInput.value);
+
+        if (
+            selectedDate.getFullYear() === today.getFullYear() &&
+            selectedDate.getMonth() === today.getMonth() &&
+            selectedDate.getDate() === today.getDate()
+        ) {
+            const nowHour = pad(today.getHours());
+            const nowMinute = pad(today.getMinutes());
+            const now = `${nowHour}:${nowMinute}`;
+            startTimeInput.min = now;
+            endTimeInput.min = startTimeInput.value || now;
+        } else {
+            startTimeInput.removeAttribute('min');
+            endTimeInput.removeAttribute('min');
+        }
+    }
+
+    dateInput.addEventListener('change', updateTimeMin);
+    startTimeInput.addEventListener('change', () => {
+        endTimeInput.min = startTimeInput.value;
+    });
+
+    document.addEventListener('DOMContentLoaded', updateTimeMin);
+</script>
+
 {% endblock %}
