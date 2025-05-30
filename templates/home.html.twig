@@ -8,57 +8,50 @@
 {% endblock %}
 
 {% block body %}
-<nav class="bg-white shadow-xs py-4 px-6 fixed top-0 w-full z-50">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="/" class="text-2xl font-bold text-blue-600">RoomReservation</a>
-        <ul class="flex items-center gap-6 text-gray-700 font-medium">
-            <li><a href="#" class="hover:text-blue-600 transition">Nos Salles</a></li>
-            {% if is_granted('ROLE_ADMIN') %}
-            {% else %}
-                <li><a href="#" class="hover:text-blue-600 transition">Mes reservations</a></li>
-            {% endif %}
-            <li><a href="{{ path('logout') }}" class="text-red-500 hover:text-red-700 transition">Déconnexion</a></li>
-        </ul>
-    </div>
-</nav>
 
-<section class="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center pt-32 px-4">
-    <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-12">
-        
+{% include 'include/nav.html.twig' %}
+
+<section class="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center pt-32 px-6">
+    <div class="max-w-7xl w-full flex flex-col-reverse md:flex-row items-center gap-12">
+
+        <!-- Texte -->
         <div class="w-full md:w-1/2 text-center md:text-left animate-fade-in-up">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 capitalize">
-                Bienvenue {{ app.user.username }} 🎉
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-snug">
+                Bienvenue <span class="text-blue-600 capitalize">{{ app.user.username }}</span> 🎉
             </h1>
-            <p class="text-lg text-gray-600 mb-6">
-                Réservez la salle idéale pour vos événements, réunions ou célébrations. Rapide, simple et efficace !
-            </p>
             {% if is_granted('ROLE_ADMIN') %}
-                <div class="mb-6">
-                    <a href="{{path('admin')}}"
-                    class="inline-block bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow-md transition">
-                        🛠 Accéder au Dashboard Admin
-                    </a>
-                </div>
+                <p class="text-lg text-gray-600 mb-8">
+                    Accéder à l'interface administrateur pour gérer les salles et les reservations
+                </p>
+
+                <a href="{{ path('admin') }}"
+                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-300">
+                    🛠 Accéder au Dashboard Admin
+                </a>
             {% else %}
+                <p class="text-lg text-gray-600 mb-8">
+                    Trouvez la salle parfaite pour vos réunions, formations ou événements. Simple, rapide et en toute confiance.
+                </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <a href="#"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
-                        Réserver une salle
+                    <a href="{{ path('user_reservation') }}"
+                       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-300">
+                        📅 Réserver une salle
                     </a>
-                    <a href="#"
-                    class="bg-gray-100 hover:bg-gray-200 text-blue-600 font-semibold py-3 px-6 rounded-lg shadow transition duration-300">
-                        Explorer nos salles
+                    <a href="{{ path('user_room_list') }}"
+                       class="bg-white hover:bg-gray-100 border border-blue-600 text-blue-600 font-semibold py-3 px-6 rounded-lg shadow transition duration-300">
+                        🏢 Explorer nos salles
                     </a>
                 </div>
             {% endif %}
         </div>
 
+        <!-- Image -->
         <div class="w-full md:w-1/2 animate-fade-in-right">
-            <img src={{ asset('/assets/img/salle_reunion_bleu.jpg') }}
-                alt="Illustration de salle"
-                class="w-full max-w-2xl mx-auto md:mx-0">
+            <img src="{{ asset('assets/img/salle_reunion_bleu.jpg') }}"
+                 alt="Illustration de salle"
+                 class="w-full max-w-md mx-auto md:mx-0 rounded-lg shadow-lg">
         </div>
+
     </div>
 </section>
-
 {% endblock %}

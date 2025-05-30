@@ -1,0 +1,10 @@
+<nav class="bg-white shadow-md py-4 px-6 fixed top-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-extrabold text-blue-600 tracking-wide">RoomReservation</a>
+        <ul class="flex items-center gap-6 text-gray-700 font-medium">
+            <li><a href="{{ path('user_room_list') }}" class="hover:text-blue-600 transition duration-200">Nos Salles</a></li>
+            <li><a href="{{ path('user_my_reservations') }}" class="hover:text-blue-600 transition duration-200">Mes réservations</a></li>
+            <li><a href="{{ path('logout') }}" class="text-red-500 hover:text-red-700 transition duration-200">Déconnexion</a></li>
+        </ul>
+    </div>
+</nav>

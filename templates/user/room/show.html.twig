@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ room.name }} - Détails de la salle{% endblock %}
+
+{% block body %}
+
+{% include 'include/nav.html.twig' %}
+
+<section class="pt-32 px-6 pb-16 min-h-screen bg-gradient-to-b from-white to-blue-50">
+    <div class="container mx-auto max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+          <img src="{{ asset('uploads/rooms/' ~ room.image) }}" alt="Image de {{ room.name }}" class="w-full h-64 object-cover rounded mb-6">
+
+          <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ room.name }}</h1>
+
+          <p class="text-gray-700 mb-2"><strong>👥 Capacité :</strong> {{ room.capacity }} personnes</p>
+          <p class="text-gray-700 mb-2"><strong>📍 Localisation :</strong> {{ room.localisation }}</p>
+          {% if room.description is not empty %}
+               <p class="text-gray-700 mb-4"><strong>📝 Description :</strong><br> {{ room.description }}</p>
+          {% else %}
+               <strong class="text-gray-700">📝 Description :</strong><p class="text-gray-700 mb-5 mx-5 my-3 italic text-sm">{{ 'Aucune description' }}</p>
+          {% endif %}
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-3">📅 Réservations à venir</h2>
+
+          {% if reservations is not empty %}
+          <ul class="divide-y divide-gray-200">
+               {% for reservation in reservations %}
+                    <li class="py-2">
+                        <p class="text-gray-700 mb-3">
+                              📅 Le <strong>{{ reservation.reservationDate|date('d/m/Y') }}</strong><br>
+                              🕘 De <strong>{{ reservation.startTime|date('H:i') }}</strong> à <strong>{{ reservation.endTime|date('H:i') }}</strong><br>
+                              👤 Réservé par : <span class="text-blue-600 font-medium">{{ reservation.user.username }}</span>
+                         </p>
+                    </li>
+               {% endfor %}
+          </ul>
+          {% else %}
+               <p class="text-gray-500 mb-4">Aucune réservation à venir pour cette salle.</p>
+          {% endif %}
+
+          <div class="flex gap-4">
+               <a href="{{ path('user_reservation', { id: room.id }) }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition duration-300">
+                    Réserver cette salle
+               </a>
+
+               <a href="{{ path('user_room_list') }}"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded transition duration-300">
+                    Retour à la liste
+               </a>
+          </div>
+    </div>
+</section>
+{% endblock %}

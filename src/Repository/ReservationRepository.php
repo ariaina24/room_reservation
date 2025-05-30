@@ -40,4 +40,17 @@ class ReservationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findUpcomingByRoom(int $roomId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.room = :roomId')
+            ->andWhere('r.ReservationDate >= :today')
+            ->setParameter('roomId', $roomId)
+            ->setParameter('today', new \DateTime())
+            ->orderBy('r.ReservationDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

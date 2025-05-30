@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Salles - RoomReservation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .card-hover:hover {
+            transform: translateY(-4px);
+            transition: transform 0.2s ease;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% include 'include/nav.html.twig' %}
+
+<section class="pt-32 px-6 pb-16 min-h-screen bg-gradient-to-b from-white to-blue-50">
+    <div class="container mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-10 text-center">🏢 Nos Salles Disponibles</h1>
+
+
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-100 text-green-800 p-4 rounded mb-4">{{ message }}</div>
+        {% endfor %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for room in rooms %}
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <img src="{{ asset('uploads/rooms/' ~ room.image) }}"
+                         alt="Image de {{ room.name }}"
+                         class="w-full h-48 object-cover">
+
+                    <div class="p-5">
+                        <h2 class="text-xl font-bold text-gray-800 mb-2">{{ room.name }}</h2>
+                        <p class="text-sm text-gray-600 mb-1">👥 Capacité : {{ room.capacity }} personnes</p>
+                        <p class="text-sm text-gray-600 mb-4">📍 Localisation : {{ room.localisation }}</p>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                        {% else %}
+                            <a href="{{ path('user_reservation', { id: room.id }) }}"
+                            class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded transition duration-300">
+                                Réserver cette salle
+                            </a>
+                            <a href="{{ path('user_room_show', { id: room.id }) }}"
+                                class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-2 px-4 ml-4 rounded transition duration-300 mr-2">
+                                Voir plus en détails
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="col-span-full text-center text-gray-500">Aucune salle disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
