@@ -27,13 +27,36 @@ final class UserReservationController extends AbstractController
             $endTime = $request->request->get('end_time');
 
             $room = $roomRepository->find($roomId);
+            $reservationDate = new \DateTime($date);
+            $startDateTime = new \DateTime($startTime);
+            $endDateTime = new \DateTime($endTime);
+
+            $conflict = $em->getRepository(Reservation::class)->createQueryBuilder('r')
+                ->andWhere('r.room = :room')
+                ->andWhere('r.ReservationDate = :date')
+                ->andWhere('
+                    (r.startTime < :endTime AND r.endTime > :startTime)
+                ')
+                ->setParameter('room', $room)
+                ->setParameter('date', $reservationDate)
+                ->setParameter('startTime', $startDateTime)
+                ->setParameter('endTime', $endDateTime)
+
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            if ($conflict) {
+                $this->addFlash('error', 'La salle est déjà réservée à cet horaire.');
+                return $this->redirectToRoute('user_reservation', ['id' => $roomId]);
+            }
 
             $reservation = new Reservation();
             $reservation->setRoom($room);
             $reservation->setUser($this->getUser());
-            $reservation->setReservationDate(new \DateTime($date));
-            $reservation->setStartTime(new \DateTime($startTime));
-            $reservation->setEndTime(new \DateTime($endTime));
+            $reservation->setReservationDate($reservationDate);
+            $reservation->setStartTime($startDateTime);
+            $reservation->setEndTime($endDateTime);
             $reservation->setStatus('pending');
 
             $em->persist($reservation);
@@ -42,6 +65,7 @@ final class UserReservationController extends AbstractController
             $this->addFlash('success', 'Réservation effectuée avec succès !');
             return $this->redirectToRoute('user_room_list');
         }
+
 
         return $this->render('user/reservation/index.html.twig', [
             'rooms' => $rooms,

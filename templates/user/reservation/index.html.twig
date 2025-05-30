@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservation rapide - RoomReservation{% endblock %}
+{% block title %}Réservation - RoomReservation{% endblock %}
 
 {% block body %}
 
@@ -9,6 +9,10 @@
 <div class="min-h-screen bg-gradient-to-br from-white to-blue-50 pt-24 px-6 flex items-center justify-center">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-8 animate-fade-in-up">
         <h2 class="text-3xl font-bold text-blue-600 mb-6 text-center">📅 Réservation d'une salle</h2>
+
+        {% for message in app.flashes('error') %}
+            <div class="bg-red-500 text-white p-4 rounded mb-4">{{ message }}</div>
+        {% endfor %}
 
         <form method="post" class="space-y-6">
             <div>
