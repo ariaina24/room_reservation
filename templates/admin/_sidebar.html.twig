@@ -1,37 +1,37 @@
-{# templates/admin/_sidebar.html.twig #}
-<aside class="w-64 bg-white shadow-lg p-6 hidden md:block">
-    <div class="text-2xl font-bold text-blue-600 mb-6">
-        <a href="/">RoomReservation</a>
+<aside class="w-64 bg-gradient-to-b from-blue-600 to-blue-700 text-white min-h-screen p-6 hidden md:block shadow-xl">
+    <div class="text-2xl font-extrabold mb-10 text-center tracking-wide">
+        <a href="/" class="hover:text-white transition duration-300">RoomReservation</a>
     </div>
-    <ul class="space-y-4 text-gray-700 font-medium">
+
+    <ul class="space-y-2 text-md">
         <li>
             <a href="{{ path('admin') }}"
-               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
-                🏠 Accueil Admin
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-300">
+                <span class="text-lg">🏠</span> <span>Accueil Admin</span>
             </a>
         </li>
         <li>
             <a href="{{ path('app_room_index') }}"
-               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
-                🧱 Gérer les Salles
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-300">
+                <span class="text-lg">🧱</span> <span>Gérer les Salles</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_reservations') }}"
-               class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
-                📅 Réservations
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-300">
+                <span class="text-lg">📅</span> <span>Réservations</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_reservations_calendar') }}"
-            class="block py-2 px-4 rounded hover:bg-blue-50 hover:text-blue-600 transition">
-                📆 Calendrier
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-300">
+                <span class="text-lg">📆</span> <span>Calendrier</span>
             </a>
         </li>
         <li>
             <a href="{{ path('logout') }}"
-               class="block py-2 px-4 rounded text-red-600 hover:bg-red-100 transition">
-                🚪 Déconnexion
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-600 bg-red-500 text-white transition duration-300">
+                <span class="text-lg">🚪</span> <span>Déconnexion</span>
             </a>
         </li>
     </ul>

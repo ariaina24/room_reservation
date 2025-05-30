@@ -1,27 +1,40 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block admin_content %}
-<h1 class="text-3xl font-bold text-gray-800 mb-8">🎛️ Dashboard Administrateur</h1>
+<div class="bg-gray-100 p-8 rounded-lg shadow-inner">
+    <h1 class="text-4xl font-extrabold text-blue-800 mb-4 flex items-center gap-2">
+        🎛️ Dashboard Administrateur
+    </h1>
+    <p class="text-gray-700 text-lg mb-10">Bienvenue dans l’espace d’administration. Vous pouvez gérer les salles, les réservations, et plus encore.</p>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="{{ path('app_room_index') }}"
+           class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition">
+            <div class="text-3xl mb-3">🧱</div>
+            <h2 class="text-2xl font-semibold mb-1">Gérer les Salles</h2>
+            <p class="text-sm opacity-90">Ajouter, modifier ou supprimer des salles disponibles.</p>
+        </a>
 
-    <a href="{{ path('app_room_index') }}"
-       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-blue-600 mb-2">🧱 Gérer les Salles</h2>
-        <p class="text-gray-600">Ajouter, modifier ou supprimer des salles disponibles.</p>
-    </a>
+        <a href="{{ path('admin_reservations') }}"
+           class="bg-gradient-to-r from-green-500 to-green-700 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition">
+            <div class="text-3xl mb-3">📅</div>
+            <h2 class="text-2xl font-semibold mb-1">Voir les Réservations</h2>
+            <p class="text-sm opacity-90">Consulter toutes les réservations des utilisateurs.</p>
+        </a>
 
-    <a href="{{ path('admin_reservations') }}"
-       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-green-600 mb-2">📅 Voir les Réservations</h2>
-        <p class="text-gray-600">Consulter toutes les réservations des utilisateurs.</p>
-    </a>
+        <a href="{{ path('admin_reservations_calendar') }}"
+           class="bg-gradient-to-r from-indigo-500 to-indigo-700 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition">
+            <div class="text-3xl mb-3">📆</div>
+            <h2 class="text-2xl font-semibold mb-1">Calendrier</h2>
+            <p class="text-sm opacity-90">Afficher toutes les réservations dans un calendrier interactif.</p>
+        </a>
 
-    <a href="{{ path('logout') }}"
-       class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-red-500 mb-2">🚪 Déconnexion</h2>
-        <p class="text-gray-600">Se déconnecter de l’espace administrateur.</p>
-    </a>
-
+        <a href="{{ path('logout') }}"
+           class="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition">
+            <div class="text-3xl mb-3">🚪</div>
+            <h2 class="text-2xl font-semibold mb-1">Déconnexion</h2>
+            <p class="text-sm opacity-90">Se déconnecter de l’espace administrateur.</p>
+        </a>
+    </div>
 </div>
 {% endblock %}

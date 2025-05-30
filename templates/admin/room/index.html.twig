@@ -1,58 +1,63 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block admin_content %}
-<h1 class="text-2xl font-bold text-gray-800 mb-6">🏠 Liste des Salles</h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8">🏠 Gestion des Salles</h1>
 
-<a href="{{ path('app_room_new') }}"
-   class="inline-block mb-6 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-    ➕ Ajouter une Salle
-</a>
+<div class="flex justify-between items-center mb-6">
+    <a href="{{ path('app_room_new') }}"
+       class="inline-flex items-center gap-2 px-5 py-2 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition">
+        ➕ Ajouter une Salle
+    </a>
+</div>
 
-<div class="overflow-x-auto">
-    <table class="min-w-full bg-white rounded shadow">
-        <thead class="bg-gray-100 text-gray-700">
+<div class="overflow-x-auto bg-white rounded-xl shadow-lg">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100 text-gray-700 text-sm uppercase tracking-wider">
             <tr>
-                <th class="p-4">Image</th>
-                <th class="p-4 text-left">Nom</th>
-                <th class="p-4 text-left">Capacité</th>
-                <th class="p-4 text-left">Localisation</th>
-                <th class="p-4 text-left">Description</th>
-                <th class="p-4 text-left">Actions</th>
+                <th class="px-6 py-4 text-left">Image</th>
+                <th class="px-6 py-4 text-left">Nom</th>
+                <th class="px-6 py-4 text-left">Capacité</th>
+                <th class="px-6 py-4 text-left">Localisation</th>
+                <th class="px-6 py-4 text-left">Description</th>
+                <th class="px-6 py-4 text-left">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-100">
         {% for room in rooms %}
-            <tr class="border-t hover:bg-gray-50 transition">
-                <td class="p-4">
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4">
                     {% if room.image %}
-                        <img src="{{ asset('uploads/rooms/' ~ room.image) }}" alt="Image salle" class="w-20 h-20 object-cover rounded">
+                        <img src="{{ asset('uploads/rooms/' ~ room.image) }}" alt="Image salle"
+                             class="w-20 h-20 object-cover rounded border shadow-sm">
                     {% else %}
-                        <span class="text-gray-400">Aucune image</span>
+                        <span class="text-gray-400 italic">Aucune image</span>
                     {% endif %}
                 </td>
-                <td class="p-4">{{ room.name }}</td>
-                <td class="p-4">{{ room.capacity }}</td>
-                <td class="p-4">{{ room.localisation }}</td>
-                {% if room.description is not empty %}
-                    <td class="p-4">{{ room.description }}</td>
-                {% else %}
-                    <td class="p-4 italic text-sm text-gray-500">{{ 'Aucune description' }}</td>
-                {% endif %}
-                <td class="p-4 space-x-2">
-                    <a href="{{ path('app_room_show', {'id': room.id}) }}"
-                       class="text-blue-600 hover:underline">🔍 Voir</a>
-                    <a href="{{ path('app_room_edit', {'id': room.id}) }}"
-                       class="text-yellow-600 hover:underline">✏️ Modifier</a>
-                    <form method="post" action="{{ path('app_room_delete', {'id': room.id}) }}" class="inline"
-                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
-                        <button class="text-red-600 hover:underline">🗑 Supprimer</button>
-                    </form>
+                <td class="px-6 py-4 font-medium text-gray-800">{{ room.name }}</td>
+                <td class="px-6 py-4 text-gray-700">{{ room.capacity }}</td>
+                <td class="px-6 py-4 text-gray-700">{{ room.localisation }}</td>
+                <td class="px-6 py-4 text-gray-600 text-sm italic">
+                    {{ room.description ?: 'Aucune description' }}
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex gap-2 flex-wrap">
+                        <a href="{{ path('app_room_show', {'id': room.id}) }}"
+                           class="text-blue-600 hover:underline">🔍 Voir</a>
+                        <a href="{{ path('app_room_edit', {'id': room.id}) }}"
+                           class="text-yellow-600 hover:underline">✏️ Modifier</a>
+                        <form method="post" action="{{ path('app_room_delete', {'id': room.id}) }}" class="inline"
+                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
+                            <button class="text-red-600 hover:underline">🗑 Supprimer</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4" class="p-4 text-center text-gray-500">Aucune salle enregistrée.</td>
+                <td colspan="6" class="px-6 py-4 text-center text-gray-500 italic">
+                    Aucune salle enregistrée.
+                </td>
             </tr>
         {% endfor %}
         </tbody>
