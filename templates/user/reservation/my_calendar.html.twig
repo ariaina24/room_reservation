@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Calendrier - RoomReservation{% endblock %}
+
+{% block body %}
+
+{% include 'include/nav.html.twig' %}
+
+<section class="pt-32 px-6 pb-16 min-h-screen bg-gradient-to-b from-white to-blue-50">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center text-blue-800 mb-8">🗓️ Mon calendrier de réservations</h1>
+        <div id="calendar" class="bg-white rounded-lg shadow p-4"></div>
+    </div>
+</section>
+
+<div id="eventModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full relative">
+        <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        <h2 class="text-2xl font-bold mb-4 text-blue-700">📅 Détail de la réservation</h2>
+        <p><strong>Salle :</strong> <span id="modalRoom"></span></p>
+        <p><strong>Capacité :</strong> <span id="modalCapacity"></span> personnes</p>
+        <p><strong>Début :</strong> <span id="modalStart"></span></p>
+        <p><strong>Fin :</strong> <span id="modalEnd"></span></p>
+        <p><strong>Statut :</strong> <span id="modalStatus"></span></p>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: '{{ path("user_reservations_json") }}',
+            eventClick: function(info) {
+                const event = info.event;
+                const props = event.extendedProps;
+
+                document.getElementById('modalRoom').textContent = event.title;
+                document.getElementById('modalCapacity').textContent = props.capacity || 'N/A';
+                document.getElementById('modalStart').textContent = event.start.toLocaleString();
+                document.getElementById('modalEnd').textContent = event.end.toLocaleString();
+                document.getElementById('modalStatus').textContent = props.status || 'Non spécifié';
+
+                document.getElementById('eventModal').classList.remove('hidden');
+            },
+            height: 'auto'
+        });
+
+        setTimeout(() => {
+            calendar.render();
+        }, 50);
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('eventModal').classList.add('hidden');
+        });
+
+        document.getElementById('eventModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

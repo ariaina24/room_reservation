@@ -7,6 +7,7 @@ use App\Repository\ReservationRepository;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -84,4 +85,35 @@ final class UserReservationController extends AbstractController
 
         return $this->redirectToRoute('user_my_reservations');
     }
+
+    #[Route('/user/mon-calendrier', name: 'user_my_calendar')]
+    public function calendar(): Response
+    {
+        return $this->render('user/reservation/my_calendar.html.twig');
+    }
+
+
+    #[Route('/user/reservations-json', name: 'user_reservations_json')]
+    public function userReservationsJson(ReservationRepository $repo): JsonResponse
+    {
+        $user = $this->getUser();
+        $reservations = $repo->findBy(['user' => $user]);
+
+        $events = [];
+
+        foreach ($reservations as $reservation) {
+            $events[] = [
+                'title' => $reservation->getRoom()->getName(),
+                'start' => $reservation->getReservationDate()->format('Y-m-d') . 'T' . $reservation->getStartTime()->format('H:i:s'),
+                'end' => $reservation->getReservationDate()->format('Y-m-d') . 'T' . $reservation->getEndTime()->format('H:i:s'),
+                'extendedProps' => [
+                    'status' => $reservation->getStatus(),
+                    'capacity' => $reservation->getRoom()->getCapacity(),
+                ],
+            ];
+        }
+
+        return $this->json($events);
+    }
+
 }
